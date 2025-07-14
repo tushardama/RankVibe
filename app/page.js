@@ -76,7 +76,7 @@ export default function Home() {
 	}
 
 	return (
-		<div>
+		<div className="relative w-full overflow-hidden">
 			<nav>
 				<Image
 					src={'/logo.svg'}
@@ -85,7 +85,7 @@ export default function Home() {
 					alt="Logo" />
 			</nav>
 			<div className="container mx-auto hero">
-				<Spotlight />
+				<Spotlight/>
 				<h1><span className="highlight">Supercharge</span> YouTube SEO with AI Keyword Generator</h1>
 				<p>Streamline Your Content Strategy with RankVibe</p>
 				<div className="search-form">
