@@ -86,7 +86,7 @@ export default function Home() {
 			</nav>
 			<div className="container mx-auto hero">
 				<Spotlight/>
-				<h1><span className="highlight">Supercharge</span> YouTube SEO with AI Keyword Generator</h1>
+				<h1><span className="highlight">Supercharge</span> SEO with AI Keyword Generator</h1>
 				<p>Streamline Your Content Strategy with RankVibe</p>
 				<div className="search-form">
 					<form onSubmit={handleSubmit(onSubmit)}>
