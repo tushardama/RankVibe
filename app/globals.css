@@ -1,5 +1,70 @@
 @import "tailwindcss";
 
 @theme {
+	--color-primary: #0d111b;
+	--color-secondary: #FEFEFE;
 	--color-accent: #FF0000;
+}
+
+::selection {
+	color: #fff;
+	background: #333;
+}
+
+body {
+	@apply w-full overflow-x-hidden bg-primary text-secondary;
+}
+
+nav {
+	@apply bg-black/20 w-full h-[10dvh] shadow-md fixed py-4 px-4 md:px-8 flex items-center justify-start;
+}
+
+.hero {
+	@apply w-[80%] h-[100dvh] flex items-center justify-center flex-col gap-4 md:gap-8;
+}
+
+.hero h1 {
+	@apply text-xl md:text-6xl font-bold text-center md:max-w-4xl;
+}
+
+.hero p {
+	@apply text-sm max-w-[10rem] md:text-3xl text-gray-200 font-medium text-center md:max-w-4xl;
+}
+
+.highlight{
+	color: transparent;
+	background-clip: text;
+	background-image: linear-gradient(114.94deg, #a091ff 9.66%, #52b9ff 87.27%);
+}
+
+.search-form {
+	@apply w-[60%] mt-8 p-8 bg-[#171c29] border border-gray-600 rounded-2xl;
+}
+
+.search-form form {
+	@apply w-full flex items-end justify-center gap-8 flex-col;
+}
+
+.search-form form input {
+	@apply w-full rounded-4xl bg-primary px-8 py-4;
+}
+
+.filledBtn {
+	@apply bg-[#0009b4] hover:shadow-[0_0_15px_5px_rgba(0,9,180,0.6)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer rounded-full px-6 py-4;
+}
+
+section {
+	@apply container mx-auto w-[80%] h-[100dvh] pt-[10dvh] text-secondary flex flex-col md:flex-row items-center justify-center gap-8;
+}
+
+section h1 {
+	@apply text-3xl md:text-6xl font-bold;
+}
+
+section p {
+	@apply text-xl md:text-2xl font-medium;
+}
+
+.sec2 {
+	@apply flex-col;
 }
