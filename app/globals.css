@@ -20,7 +20,7 @@ nav {
 }
 
 .hero {
-	@apply w-[80%] h-[100dvh] flex items-center justify-center flex-col gap-4 md:gap-8;
+	@apply w-[80%] min-h-[100dvh] pt-[16dvh] flex items-center justify-center flex-col gap-4 md:gap-8;
 }
 
 .hero h1 {
@@ -38,7 +38,7 @@ nav {
 }
 
 .search-form {
-	@apply w-[60%] mt-8 p-8 bg-[#171c29] border border-gray-600 rounded-2xl;
+	@apply w-[80%] mt-8 p-8 bg-[#171c29] border border-gray-600 rounded-2xl;
 }
 
 .search-form form {
@@ -53,15 +53,43 @@ nav {
 	@apply bg-[#0009b4] hover:shadow-[0_0_15px_5px_rgba(0,9,180,0.6)] transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer rounded-full px-6 py-4;
 }
 
-section {
+.results {
+	@apply w-[80%] flex flex-col justify-center items-center gap-8;
+}
+
+.result-heading {
+	@apply flex w-full justify-between items-center;
+}
+
+.result-heading h2 {
+	@apply text-4xl tracking-wide font-bold;
+}
+
+.suggestions{
+	@apply flex flex-wrap gap-2;
+}
+
+.suggestion {
+	@apply rounded-md bg-[#171c29] border border-gray-600 flex items-center justify-center gap-2 p-4;
+}
+
+.editable-suggestion{
+	@apply mr-8;
+}
+
+.suggestion button {
+	@apply cursor-pointer p-3 bg-primary rounded-full;
+}
+
+.sec1, .sec2 {
 	@apply container mx-auto w-[80%] h-[100dvh] pt-[10dvh] text-secondary flex flex-col md:flex-row items-center justify-center gap-8;
 }
 
-section h1 {
+.sec1 h1, .sec2 h1 {
 	@apply text-3xl md:text-6xl font-bold;
 }
 
-section p {
+.sec1 p, .sec2 p {
 	@apply text-xl md:text-2xl font-medium;
 }
 

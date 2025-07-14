@@ -2,13 +2,20 @@
 
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Copy, LoaderCircle, X } from "lucide-react";
 import { Spotlight } from "@/components/ui/spotlight-new";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+
+	const [suggestions, setSuggestions] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(() => {
+		console.log(suggestions);
+	}, [suggestions]);
 
 	const {
 		register,
@@ -21,25 +28,55 @@ export default function Home() {
 
 		try {
 
-			
+			const seed = data.seed.trim();
+
+			setIsLoading(true)
+
+			if (!seed) {
+				toast.error("Please enter a valid seed keyword.");
+				return;
+			}
+
+			const res = await fetch(`/api/suggest?q=${encodeURIComponent(seed)}`);
+			if (!res.ok) {
+				throw new Error("Failed to fetch suggestions");
+			}
+			const result = await res.json();
+
+			if (Array.isArray(result.suggestions)) {
+				setSuggestions(result.suggestions);
+			} else {
+				setSuggestions([]);
+				toast.error("No suggestions found");
+			}
+
 
 		} catch (err) {
 			console.log(err);
+		} finally {
+			setIsLoading(false);
 		}
 
 	}
 
+	const copyKeyword = (keyword) => {
+		navigator.clipboard.writeText(keyword)
+		toast.success('Keyword Copied !')
+	}
+
+	const removeKeyword = (indexToRemove) => {
+		const updatedSuggestions = suggestions.filter((_, index) => index !== indexToRemove);
+		setSuggestions(updatedSuggestions)
+	}
+
+	const copyAll = () => {
+		const keywordString = suggestions.join(", ");
+		navigator.clipboard.writeText(keywordString)
+		toast.success('Suggestions Copied !')
+	}
+
 	return (
 		<div>
-			<ToastContainer
-				position="top-right"
-				theme="dark"
-				autoClose={3000}
-				hideProgressBar={false}
-				closeOnClick
-				pauseOnHover
-				draggable
-			/>
 			<nav>
 				<Image
 					src={'/logo.svg'}
@@ -54,18 +91,52 @@ export default function Home() {
 				<div className="search-form">
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<input
-							{...register("text", {
+							{...register("seed", {
 								required: "Seed is required"
 							})}
 							type="text"
 							placeholder="Enter phrase or keyword"
 						/>
-						<button className='filledBtn' type='submit'>Generate Keywords <ArrowRight /></button>
+						{isLoading ? (
+							<button disabled className='filledBtn' type='submit'>
+								<LoaderCircle className="animate-spin" />
+							</button>
+						) : (
+							<button className='filledBtn' type='submit'>
+								Generate Keywords <ArrowRight />
+							</button>
+						)}
 					</form>
 				</div>
-				<div className="result">
-
-				</div>
+				{suggestions.length > 0 && (
+					<div className="results mt-6">
+						<div className="result-heading">
+							<h2>Suggested Keywords</h2>
+							<button onClick={copyAll} className="filledBtn">Copy All <Copy /></button>
+						</div>
+						<div className="suggestions">
+							{suggestions.map((keyword, index) => (
+								<div className="suggestion" key={index}>
+									<div
+										contentEditable
+										suppressContentEditableWarning
+										onBlur={(e) => {
+											const newText = e.target.innerText.trim();
+											const newSuggestions = [...suggestions];
+											newSuggestions[index] = newText;
+											setSuggestions(newSuggestions);
+										}}
+										className="editable-suggestion"
+									>
+										{keyword}
+									</div>
+									<button onClick={() => copyKeyword(keyword)}><Copy size={18} /></button>
+									<button onClick={() => removeKeyword(index)}><X size={18} color="red" /></button>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
 			</div>
 			<section className="sec1">
 				<Image
@@ -89,6 +160,15 @@ export default function Home() {
 					height={600}
 					alt="Logo" />
 			</section>
+			<ToastContainer
+				position="top-right"
+				theme="dark"
+				autoClose={3000}
+				hideProgressBar={false}
+				closeOnClick
+				pauseOnHover
+				draggable
+			/>
 		</div>
 	);
 }
